@@ -1,0 +1,81 @@
+{
+  "departmentConfig": {
+    "referenceNumber": {
+      "name": "Reference Number",
+      "offset": 0
+    },
+    "workOrderNumber": {
+      "name": "Work Order Number",
+      "offset": 1
+    },
+    "reportingParty": {
+      "name": "Reporting Party",
+      "offset": 2
+    },
+    "dateRequested": {
+      "name": "Date Requested",
+      "offset": 3
+    },
+    "status": {
+      "name": "Status",
+      "offset": 4
+    },
+    "location": {
+      "name": "Location",
+      "offset": 5
+    },
+    "description": {
+      "name": "Description",
+      "offset": 6
+    },
+    "notes": {
+      "name": "Notes",
+      "offset": 7
+    }
+  },
+  "facilitiesConfig": {
+    "referenceNumber": {
+      "name": "Reference Number",
+      "offset": 0
+    },
+    "workOrderNumber": {
+      "name": "Work Order Number",
+      "offset": 1
+    },
+    "dateRequestEntered": {
+      "name": "Date Request Entered",
+      "offset": 2
+    },
+    "workOrderStatus": {
+      "name": "Work Order Status",
+      "offset": 3
+    },
+    "building": {
+      "name": "Building",
+      "offset": 4
+    },
+    "description": {
+      "name": "Description",
+      "offset": 5
+    },
+    "contactEmailAddress": {
+      "name": "Contact Email Address",
+      "offset": 6
+    }
+  },
+  "helpPageConfig": {
+
+    "usage": {
+      "title": "Usage",
+      "text": "To get started using this tool, you’ll need at least two files: an export of the department’s work order spreadsheet, and an export from the facilities services website. If you don’t know where to find these files, please ask your supervisor.\n\nWith these files downloaded to your computer, click the “upload” button on the homepage. Select the files one at a time from your file explorer. You should see them appear in the app. For the file you downloaded from the department's website, label it as a “Department” upload by clicking the corresponding button. For the file you downloaded from the facilities services website, label it as a “Facilities” upload in the same manner.\n\nNow click the file icon at the bottom left of your screen. This will prompt you to choose a path in your file explorer where you’d like the output of the tool to be saved. The name of this path should appear on screen when you’ve selected it.\n\nClick the run button at the bottom right of your screen to run the tool. If there were no errors, the output should be saved at the location you specified in a .csv file. This file can be uploaded back to the department spreadsheet to serve as the new record of work orders. You could also copy and paste the contents of the file over the department spreadsheet."
+    },
+    "debugging": {
+      "title": "Debugging",
+      "text": "If the app encounters an error, a message will popup explaining what happened. Not selecting an output path or trying to run the tool without files uploaded, for example, will produce errors. If there's a problem with the format of the files you upload, the popup will tell you what file and row the error occurred in.\n\nThe tool expects uploads to be of a specific format. If the data were malformed or the format of the department or facilities files were to change, you would get an error. In the best case, you can follow the error back to the file it occurred in and change cells to the proper format. Try setting cells to “N/A” if they are being particularly problematic. In the worst case, the format facilities services use for their exports might have changed completely. The app would no longer function.\n\nIn this case, feel free to contact me at the email provided below. If something simple changed like the order of columns in the export or the column names, all that would be required to fix the app is changing a few lines in a config file. If you’d like to attempt to fix it yourself or expand on the project as a whole, you can find a link to its github repository below."
+    },
+    "github": {
+      "title": "Github",
+      "text": "Created by Jack Thornburg (2026)\nEmail: jackrtunc@gmail.com\nGitHub: https://www.github.com/xyz"
+    }
+  }
+}
