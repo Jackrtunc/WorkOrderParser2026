@@ -8,6 +8,7 @@ public record DepartmentConfig(
     @JsonProperty(required = true) Header reportingParty,
     @JsonProperty(required = true) Header dateRequested,
     @JsonProperty(required = true) Header status,
+    @JsonProperty(required = true) Header building,
     @JsonProperty(required = true) Header location,
     @JsonProperty(required = true) Header description,
     @JsonProperty(required = true) Header notes)
@@ -19,6 +20,7 @@ public record DepartmentConfig(
       reportingParty.name(),
       dateRequested.name(),
       status.name(),
+      building.name(),
       location.name(),
       description.name(),
       notes.name()

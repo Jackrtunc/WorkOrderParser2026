@@ -40,7 +40,8 @@ public class CsvWorkOrderParser implements Parser {
       if (!Arrays.equals(headers, factory.getConfig().getHeaderNames()))
         throw new ModelException(
             String.format(
-                "Column names do not fit expected format\nError occurred in %s", fileName));
+                "Column names do not fit expected format: check for hidden empty columns\nError occurred in %s",
+                fileName));
     }
 
     @Override

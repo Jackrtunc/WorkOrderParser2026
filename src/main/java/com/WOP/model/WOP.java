@@ -17,6 +17,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import java.io.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -170,6 +171,9 @@ public class WOP implements Model {
       }
     }
 
+    // stores messages returned from work order additions
+    List<String> updates = new ArrayList<>();
+
     // process facilities spreadsheets
     for (Upload upload : uploads) {
       if (upload.getUploadType() == UploadType.FACILITIES) {
@@ -180,7 +184,7 @@ public class WOP implements Model {
                 new FacilitiesWorkOrderFactory(
                     config.facilitiesConfig()))) { // Note the different factory
           for (WorkOrder workOrder : facilitiesParser) {
-            workOrders.add(workOrder);
+            updates.add(workOrders.add(workOrder));
           }
         }
       }
@@ -195,7 +199,12 @@ public class WOP implements Model {
       }
     }
 
-    return outputFile.getAbsolutePath(); // return the output location name for the success message
+    StringBuilder successMessage = new StringBuilder(String.format("Output saved at %s\n", outputFile.getAbsolutePath()));
+    for (String update : updates) {
+      successMessage.append(update);
+      successMessage.append('\n');
+    }
+    return successMessage.toString();
   }
 
   private File getOutputFile() {

@@ -1,7 +1,6 @@
 package com.WOP.workorder.storage;
 
 import com.WOP.workorder.WorkOrder;
-
 import java.util.Iterator;
 import java.util.TreeMap;
 
@@ -14,17 +13,18 @@ public class WorkOrderTree implements WorkOrderStorage {
   }
 
   @Override
-  public void add(WorkOrder workOrder) {
-    if (workOrders.containsKey(workOrder.getIdentifier())) {
-
+  public String add(WorkOrder added) {
+    if (workOrders.containsKey(added.getIdentifier())) {
       // If a duplicate work order is added, merge it with the existing work order in the tree
-      // This handles updating changes in work order status
-      WorkOrder merged = workOrder.merge(workOrders.get(workOrder.getIdentifier()));
-      workOrders.put(merged.getIdentifier(), merged);
-
-    } else {
-      workOrders.put(workOrder.getIdentifier(), workOrder);
+      // This handles updating changes in work order status, notes, etc.
+      WorkOrder existing = workOrders.get(added.getIdentifier());
+      WorkOrder updated = added.merge(existing);
+      workOrders.put(updated.getIdentifier(), updated);
+      return String.format("Updated existing work order: %s", updated);
     }
+
+    workOrders.put(added.getIdentifier(), added);
+    return String.format("Added new work order: %s", added);
   }
 
   @Override

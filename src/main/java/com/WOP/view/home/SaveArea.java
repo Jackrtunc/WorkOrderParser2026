@@ -80,9 +80,7 @@ public class SaveArea implements FXComponent {
     runButton.setOnAction(
         (ActionEvent _) -> {
           try {
-            String outputFilePath = controller.execute();
-            showSuccessDialogue.accept(
-                String.format("Email parser ran successfully\nOutput saved at %s", outputFilePath));
+            showSuccessDialogue.accept(controller.execute());
           } catch (Exception ex) {
             showErrorDialogue.accept(ex.getMessage());
           }

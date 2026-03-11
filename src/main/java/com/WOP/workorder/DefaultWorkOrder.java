@@ -1,7 +1,6 @@
 package com.WOP.workorder;
 
 import com.WOP.workorder.factories.WorkOrderFactory;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -13,6 +12,7 @@ public class DefaultWorkOrder implements WorkOrder {
   private final String reportingParty;
   private final String dayRequested;
   private final Status status;
+  private final String building;
   private final String location;
   private final String description;
   private final String notes;
@@ -23,29 +23,33 @@ public class DefaultWorkOrder implements WorkOrder {
       String reportingParty,
       String dayRequested,
       Status status,
+      String building,
       String location,
       String description,
       String notes) {
 
     if (referenceNumber < 0)
-      throw new WorkOrderException("Invalid reference number: input must be positive");
+      throw new WorkOrderException("Invalid reference number: number must be positive");
     if (workOrderNumber < 0)
-      throw new WorkOrderException("Invalid work order number: input must be positive");
+      throw new WorkOrderException("Invalid work order number: number must be positive");
     if (reportingParty.isEmpty())
-      throw new WorkOrderException("Invalid reporting party: input must not be empty");
+      throw new WorkOrderException("Invalid reporting party: reporting party must not be empty");
     if (isInvalidDate(dayRequested))
-      throw new WorkOrderException("Invalid day requested: input must be mm/dd/yyyy");
+      throw new WorkOrderException("Invalid day requested: date must be mm/dd/yyyy");
     if (status == Status.UNKNOWN || status == null)
       throw new WorkOrderException("Invalid status: unknown status code");
+    if (building.isEmpty())
+      throw new WorkOrderException("Invalid building: building must not be empty");
     if (location.isEmpty())
-      throw new WorkOrderException("Invalid location: input must not be empty");
+      throw new WorkOrderException("Invalid location: location must not be empty");
     if (description.isEmpty())
-      throw new WorkOrderException("Invalid description: input must not be empty");
+      throw new WorkOrderException("Invalid description: description must not be empty");
 
     this.referenceNumber = referenceNumber;
     this.workOrderNumber = workOrderNumber;
     this.reportingParty = reportingParty;
     this.dayRequested = dayRequested;
+    this.building = building;
     this.location = location;
     this.description = description;
     this.notes = notes;
@@ -82,6 +86,7 @@ public class DefaultWorkOrder implements WorkOrder {
       reportingParty,
       dayRequested,
       status.toString(),
+      building,
       location,
       description,
       notes
@@ -115,7 +120,8 @@ public class DefaultWorkOrder implements WorkOrder {
             this.getStatus(),
             other
                 .getStatus()), // If two work orders with the same reference number are encountered,
-                               // merging them should yield the max (latest) status of the two
+        // merging them should yield the max (latest) status of the two
+        this.building,
         this.location,
         this.description,
         this.getNotes() == null ? other.getNotes() : this.getNotes());

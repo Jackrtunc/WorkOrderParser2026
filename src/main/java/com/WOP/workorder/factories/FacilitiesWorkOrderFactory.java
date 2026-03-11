@@ -41,6 +41,7 @@ public class FacilitiesWorkOrderFactory implements WorkOrderFactory {
       }
 
       // parse location from description
+      String building = row[config.building().offset()];
       String location =
           row[config.description().offset()].equals(
                   acceptString) // If the description is 'N/A', make the location 'N/A' also
@@ -56,6 +57,7 @@ public class FacilitiesWorkOrderFactory implements WorkOrderFactory {
           contactEmailAddress,
           dateRequestEntered,
           workOrderStatus,
+          building,
           location,
           description,
           null // facilities uploads don't have notes
@@ -69,33 +71,31 @@ public class FacilitiesWorkOrderFactory implements WorkOrderFactory {
   // joins building and room number (found in description) into a single location column
   private String parseLocation(String[] row) {
     String description = (row[config.description().offset()]);
-
-    StringBuilder location = new StringBuilder((row[config.building().offset()]));
-    location.append(" ");
+    StringBuilder location = new StringBuilder();
 
     final String LOCATION_TAG = "Location: ";
     final String DEPARTMENT_TAG = "Department: ";
 
     // room number appears after "Location: "
-    int roomNumberStart = description.lastIndexOf(LOCATION_TAG);
+    int locationStartIndex = description.lastIndexOf(LOCATION_TAG);
 
-    if (roomNumberStart == -1) {
-      location.append("???"); // if "Location: " doesn't appear in the description
+    if (locationStartIndex == -1) {
+      location.append("N/A"); // if "Location: " doesn't appear in the description
 
     } else {
-      roomNumberStart += LOCATION_TAG.length();
+      locationStartIndex += LOCATION_TAG.length();
 
-      int roomNumberEnd =
+      int locationEndIndex =
           description.indexOf(
-              DEPARTMENT_TAG, roomNumberStart); // room number appears before "Department: "
+              DEPARTMENT_TAG, locationStartIndex); // room number appears before "Department:"
 
-      if (roomNumberEnd == -1) {
+      if (locationEndIndex == -1) {
         // if the description doesn't fully contain "Department: " just read until the end of the
         // description
-        roomNumberEnd = description.length();
+        locationEndIndex = description.length();
       }
 
-      location.append(description.substring(roomNumberStart, roomNumberEnd).trim());
+      location.append(description.substring(locationStartIndex, locationEndIndex).trim());
     }
 
     return location.toString();

@@ -20,17 +20,21 @@
       "name": "Status",
       "offset": 4
     },
+    "building": {
+      "name": "Building",
+      "offset": 5
+    },
     "location": {
       "name": "Location",
-      "offset": 5
+      "offset": 6
     },
     "description": {
       "name": "Description",
-      "offset": 6
+      "offset": 7
     },
     "notes": {
       "name": "Notes",
-      "offset": 7
+      "offset": 8
     }
   },
   "facilitiesConfig": {

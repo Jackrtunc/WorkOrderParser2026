@@ -46,6 +46,7 @@ public class DepartmentWorkOrderFactory implements WorkOrderFactory {
 
       String reportingParty = row[config.reportingParty().offset()];
       String dateRequested = row[config.dateRequested().offset()];
+      String building = row[config.building().offset()];
       String location = row[config.location().offset()];
       String description = row[config.description().offset()];
       String notes = row[config.notes().offset()];
@@ -56,6 +57,7 @@ public class DepartmentWorkOrderFactory implements WorkOrderFactory {
           reportingParty,
           dateRequested,
           status,
+          building,
           location,
           description,
           notes);
