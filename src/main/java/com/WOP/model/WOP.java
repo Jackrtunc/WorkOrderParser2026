@@ -171,7 +171,7 @@ public class WOP implements Model {
       }
     }
 
-    // stores messages returned from work order additions
+    // stores update messages returned from work order additions
     List<String> updates = new ArrayList<>();
 
     // process facilities spreadsheets
@@ -184,7 +184,10 @@ public class WOP implements Model {
                 new FacilitiesWorkOrderFactory(
                     config.facilitiesConfig()))) { // Note the different factory
           for (WorkOrder workOrder : facilitiesParser) {
-            updates.add(workOrders.add(workOrder));
+            String update = workOrders.add(workOrder);
+            if (!update.isEmpty()) {
+              updates.add(update);
+            }
           }
         }
       }
@@ -192,19 +195,28 @@ public class WOP implements Model {
 
     // Write processed work orders to the output file (always .csv)
     File outputFile = getOutputFile();
-    try (CSVWriter writer = new CSVWriter(new FileWriter(outputFile))) {
-      writer.writeNext(config.departmentConfig().getHeaderNames()); // Write the column names first
+    try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile))) {
+      csvWriter.writeNext(
+          config.departmentConfig().getHeaderNames()); // Write the column names first
       for (WorkOrder workOrder : workOrders) {
-        writer.writeNext(workOrder.toArray()); // Convert work orders to arrays (csv rows)
+        csvWriter.writeNext(workOrder.toArray()); // Convert work orders to arrays (csv rows)
       }
     }
 
-    StringBuilder successMessage = new StringBuilder(String.format("Output saved at %s\n", outputFile.getAbsolutePath()));
-    for (String update : updates) {
-      successMessage.append(update);
-      successMessage.append('\n');
+    // Write update messages to a text file
+    String updateSuccessMessage = "";
+    if (!updates.isEmpty()) {
+      File updatesFile = new File(outputDir, "updates.txt");
+      try (FileWriter updateWriter = new FileWriter(updatesFile)) {
+        for (String update : updates) {
+          updateWriter.write(String.format("%s\n", update));
+        }
+      }
+      updateSuccessMessage = String.format("Change log saved at %s", updatesFile.getAbsolutePath());
     }
-    return successMessage.toString();
+
+    return String.format(
+        "Output saved at %s\n%s", outputFile.getAbsolutePath(), updateSuccessMessage);
   }
 
   private File getOutputFile() {

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Comparator;
 
 public class DefaultWorkOrder implements WorkOrder {
   private final int referenceNumber;
@@ -57,8 +58,38 @@ public class DefaultWorkOrder implements WorkOrder {
   }
 
   @Override
-  public int getIdentifier() {
+  public int getReferenceNumber() {
     return referenceNumber;
+  }
+
+  @Override
+  public int getWorkOrderNumber() {
+    return workOrderNumber;
+  }
+
+  @Override
+  public String getReportingParty() {
+    return reportingParty;
+  }
+
+  @Override
+  public String getDayRequested() {
+    return dayRequested;
+  }
+
+  @Override
+  public String getBuilding() {
+    return building;
+  }
+
+  @Override
+  public String getLocation() {
+    return location;
+  }
+
+  @Override
+  public String getDescription() {
+    return description;
   }
 
   @Override
@@ -73,7 +104,7 @@ public class DefaultWorkOrder implements WorkOrder {
 
   @Override
   public int compareTo(WorkOrder o) {
-    return getIdentifier() - o.getIdentifier();
+    return getReferenceNumber() - o.getReferenceNumber();
   }
 
   @Override
@@ -106,25 +137,7 @@ public class DefaultWorkOrder implements WorkOrder {
 
     DefaultWorkOrder entry = (DefaultWorkOrder) obj;
     // equivalence based only on reference number
-    return this.getIdentifier() == entry.getIdentifier();
-  }
-
-  @Override
-  public WorkOrder merge(WorkOrder other) {
-    return new DefaultWorkOrder(
-        this.referenceNumber,
-        this.workOrderNumber,
-        this.reportingParty,
-        this.dayRequested,
-        Status.Max(
-            this.getStatus(),
-            other
-                .getStatus()), // If two work orders with the same reference number are encountered,
-        // merging them should yield the max (latest) status of the two
-        this.building,
-        this.location,
-        this.description,
-        this.getNotes() == null ? other.getNotes() : this.getNotes());
+    return this.getReferenceNumber() == entry.getReferenceNumber();
   }
 
   private boolean isInvalidDate(String date) {

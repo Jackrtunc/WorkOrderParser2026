@@ -2,7 +2,7 @@ package com.WOP.workorder;
 
 import com.WOP.workorder.factories.WorkOrderFactory;
 
-public enum Status {
+public enum Status implements Comparable<Status> {
   ENTERED("00-ENTERED", 0),
   PENDING_APPROVAL("Pending Approval", 1),
   OPEN("00-OPEN", 2),
@@ -31,10 +31,6 @@ public enum Status {
   Status(String name, int precedence) {
     this.name = name;
     this.precedence = precedence;
-  }
-
-  public static Status Max(Status x, Status y) {
-    return x.getPrecedence() >= y.getPrecedence() ? x : y;
   }
 
   public static Status fromString(String name) {
