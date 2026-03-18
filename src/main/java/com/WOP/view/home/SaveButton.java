@@ -16,25 +16,25 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
 public class SaveButton implements FXComponent {
-  private Model model;
-  private Controller controller;
+  private final Controller controller;
+  private final int size;
   private final Consumer<String> showErrorDialogue;
 
-  SaveButton(Model model, Controller controller, Consumer<String> showErrorDialogue) {
-    this.model = model;
+  SaveButton(Controller controller, int size, Consumer<String> showErrorDialogue) {
     this.controller = controller;
+    this.size = size;
     this.showErrorDialogue = showErrorDialogue;
   }
 
   @Override
   public Parent render() {
-    Button saveFileButton = new Button();
-    saveFileButton.setStyle(
+    Button saveButton = new Button();
+    saveButton.setStyle(
         """
         -fx-background-radius: 3;
         -fx-background-color: #0047AB;""");
-    saveFileButton.setGraphic(new ImageView(new Image("folderImage1.png", 30, 30, true, true)));
-    saveFileButton.setOnAction(
+    saveButton.setGraphic(new ImageView(new Image("folderImage1.png", size, size, true, true)));
+    saveButton.setOnAction(
         (ActionEvent _) -> {
           DirectoryChooser directoryChooser = new DirectoryChooser();
           File selectedDirectory = directoryChooser.showDialog(new Stage());
@@ -44,6 +44,6 @@ public class SaveButton implements FXComponent {
             showErrorDialogue.accept("Error opening directory");
           }
         });
-    return saveFileButton;
+    return saveButton;
   }
 }

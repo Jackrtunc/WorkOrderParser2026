@@ -35,35 +35,35 @@ public class UploadCard implements FXComponent {
       -fx-pref-width: 450;
       -fx-spacing: 50""");
 
-    VBox uploadInfo = new VBox();
-    uploadInfo.setStyle("-fx-spacing: 12;");
-    uploadCard.getChildren().add(uploadInfo);
+    VBox uploadInfoContainer = new VBox();
+    uploadInfoContainer.setStyle("-fx-spacing: 12;");
+    uploadCard.getChildren().add(uploadInfoContainer);
 
     VBox nameContainer = new VBox();
     nameContainer.setStyle("-fx-spacing: 3");
-    uploadInfo.getChildren().add(nameContainer);
+    uploadInfoContainer.getChildren().add(nameContainer);
 
     Label uploadName = new Label(upload.getName());
     uploadName.setStyle(
         """
       -fx-font-family: Arial, sans-serif;
       -fx-text-fill: #000000;
-      -fx-font-size: 18;""");
+      -fx-font-size: 20;""");
     nameContainer.getChildren().add(uploadName);
 
-    Label whatCategory = new Label("Select category");
-    whatCategory.setStyle(
+    Label selectCategory = new Label("Select category");
+    selectCategory.setStyle(
         """
       -fx-font-family: Arial, sans-serif;
       -fx-text-fill: #5A5A5A;
-      -fx-font-size: 16;""");
-    nameContainer.getChildren().add(whatCategory);
+      -fx-font-size: 18;""");
+    nameContainer.getChildren().add(selectCategory);
 
-    HBox toggleContainer = new HBox();
-    toggleContainer.setStyle(
+    HBox buttonContainer = new HBox();
+    buttonContainer.setStyle(
         """
       -fx-spacing: 5;""");
-    uploadInfo.getChildren().add(toggleContainer);
+    uploadInfoContainer.getChildren().add(buttonContainer);
 
     String base =
         """
@@ -87,40 +87,40 @@ public class UploadCard implements FXComponent {
         -fx-border-color: #0047AB;
         -fx-font-weight: bold;""";
 
-    Button department = new Button("Department");
-    department.setStyle(upload.getUploadType() == UploadType.DEPARTMENT ? active : inactive);
-    department.setOnAction(
+    Button departmentButton = new Button("Department");
+    departmentButton.setStyle(upload.getUploadType() == UploadType.DEPARTMENT ? active : inactive);
+    departmentButton.setOnAction(
         (ActionEvent _) ->
             controller.setUploadType(
                 upload,
                 upload.getUploadType() == UploadType.DEPARTMENT
                     ? UploadType.UNDEFINED // If department is currently selected, clicking should change it to undefined
                     : UploadType.DEPARTMENT)); // Vice versa
-    toggleContainer.getChildren().add(department);
+    buttonContainer.getChildren().add(departmentButton);
 
-    Button facilities = new Button("Facilities");
-    facilities.setStyle(upload.getUploadType() == UploadType.FACILITIES ? active : inactive);
-    facilities.setOnAction(
+    Button facilitiesButton = new Button("Facilities");
+    facilitiesButton.setStyle(upload.getUploadType() == UploadType.FACILITIES ? active : inactive);
+    facilitiesButton.setOnAction(
         (ActionEvent _) ->
             controller.setUploadType(
                 upload,
                 upload.getUploadType() == UploadType.FACILITIES
                     ? UploadType.UNDEFINED
                     : UploadType.FACILITIES));
-    toggleContainer.getChildren().add(facilities);
+    buttonContainer.getChildren().add(facilitiesButton);
 
     Region spacer = new Region();
     HBox.setHgrow(spacer, Priority.ALWAYS);
     uploadCard.getChildren().add(spacer);
 
-    Button removeFileButton = new Button("❌");
-    removeFileButton.setStyle(
+    Button removeUploadButton = new Button("❌");
+    removeUploadButton.setStyle(
         """
               -fx-background-color: transparent;
               -fx-text-fill: #5A5A5A;
               -fx-font-size: 18;""");
-    removeFileButton.setOnAction((ActionEvent _) -> controller.removeUpload(upload));
-    uploadCard.getChildren().add(removeFileButton);
+    removeUploadButton.setOnAction((ActionEvent _) -> controller.removeUpload(upload));
+    uploadCard.getChildren().add(removeUploadButton);
 
     return uploadCard;
   }

@@ -90,7 +90,7 @@ public class WOP implements Model {
         () -> {
           upload.setUploadType(uploadType);
           updateObservers();
-        }); // set the new type iff the model state allows it
+        }); // set the new type if the model state allows it
   }
 
   @Override
@@ -193,7 +193,7 @@ public class WOP implements Model {
       }
     }
 
-    // Write processed work orders to the output file (always .csv)
+    // Write processed work orders to the output file
     File outputFile = getOutputFile();
     try (CSVWriter csvWriter = new CSVWriter(new FileWriter(outputFile))) {
       csvWriter.writeNext(
@@ -238,7 +238,7 @@ public class WOP implements Model {
     if (departmentCount < 1)
       throw new ModelException(
           "Department spreadsheet not selected"); // There needs to be at least 1 department and 1
-    // facilities spreadsheet
+                                                  // facilities spreadsheet
     if (facilitiesCount < 1) throw new ModelException("Facilities spreadsheet not selected");
   }
 
@@ -293,7 +293,7 @@ public class WOP implements Model {
 
       ObjectMapper mapper =
           new ObjectMapper(); // Maps JSON objects from src/main/resources/config.json to the root
-      // Config record
+                              // Config record
       return mapper.readValue(stream, Config.class);
     }
   }

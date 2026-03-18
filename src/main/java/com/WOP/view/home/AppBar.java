@@ -25,51 +25,50 @@ public class AppBar implements FXComponent {
         """
       -fx-background-color: #0047AB;
       -fx-pref-height: 70;
+      -fx-padding: 16 10 16 22;
       -fx-alignment: center;""");
 
-    Label WOPTitle = new Label("Work Order Parser 2.0");
+    Label WOPTitle = new Label("Work Order Parser");
     WOPTitle.setStyle(
         """
       -fx-font-family: Arial, sans-serif;
       -fx-text-fill: #FFFFFF;
-      -fx-font-size: 25;
-      -fx-padding: 15;
-      -fx-alignment: center-left;""");
+      -fx-font-size: 25;""");
     appBar.getChildren().add(WOPTitle);
 
     Region spacer = new Region();
     HBox.setHgrow(spacer, Priority.ALWAYS);
     appBar.getChildren().add(spacer);
 
+    HBox buttonContainer = new HBox();
+    buttonContainer.setStyle(
+        """
+      -fx-alignment: center;""");
+    appBar.getChildren().add(buttonContainer);
+
     Button homeButton = new Button();
-    Image home = new Image("homeImage.png", 40, 40, true, true);
-    ImageView homeImage = new ImageView(home);
-    homeButton.setGraphic(homeImage);
+    homeButton.setGraphic(new ImageView(new Image("homeImage.png", 42, 42, true, true)));
     homeButton.setStyle(
         """
       -fx-background-radius: 0;
       -fx-background-color: #0047AB;
       -fx-border-width: 1px;
-      -fx-padding: 11 18 11 0;
       -fx-pref-height: 35px;
       -fx-pref-width: 35px;""");
     homeButton.setOnAction(_ -> controller.clickHome());
-    appBar.getChildren().add(homeButton);
+    buttonContainer.getChildren().add(homeButton);
 
     Button helpButton = new Button();
-    Image help = new Image("questionMarkImage.png", 40, 40, true, true);
-    ImageView helpImage = new ImageView(help);
-    helpButton.setGraphic(helpImage);
+    helpButton.setGraphic(new ImageView(new Image("questionMarkImage.png", 42, 42, true, true)));
     helpButton.setStyle(
         """
       -fx-background-radius: 0;
       -fx-background-color: #0047AB;
       -fx-border-width: 1px;
-      -fx-padding: 11 18 11 0;
       -fx-pref-height: 35px;
       -fx-pref-width: 35px;""");
     helpButton.setOnAction(_ -> controller.clickHelp());
-    appBar.getChildren().add(helpButton);
+    buttonContainer.getChildren().add(helpButton);
 
     return appBar;
   }

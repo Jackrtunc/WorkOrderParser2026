@@ -35,10 +35,10 @@ public class App extends Application {
                 new XLSXConverter())); // Supported file extensions and converters (to .csv) for
                                        // them
     Controller controller = new WOPController(model);
-    View view = new WOPView(model, controller, stage, 700, 700);
+    View view = new WOPView(model, controller, stage, 700);
     model.addObserver(view);
 
-    Scene window = new Scene(view.render(), view.sceneWidth(), view.sceneHeight());
+    Scene window = new Scene(view.render(), 700, 700);
     stage.setScene(window);
     stage.show();
   }

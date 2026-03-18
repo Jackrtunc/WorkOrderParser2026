@@ -67,6 +67,7 @@ public class WorkOrderTree implements WorkOrderStorage {
     }
 
     if (updated.getWorkOrderNumber() != existing.getWorkOrderNumber()) {
+      difference.append('\n');
       difference.append(
           String.format(
               "Work order %d work order number updated: %d -> %d",

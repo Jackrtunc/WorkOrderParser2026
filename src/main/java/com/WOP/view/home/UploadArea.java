@@ -12,8 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -29,7 +27,7 @@ public class UploadArea implements FXComponent {
     this.controller = controller;
     this.showErrorDialogue = showErrorDialogue;
     if (saveButtonRender == null) {
-      saveButtonRender = new SaveButton(model, controller, showErrorDialogue).render();
+      saveButtonRender = new SaveButton(controller, 29, showErrorDialogue).render();
     }
   }
 
@@ -38,28 +36,21 @@ public class UploadArea implements FXComponent {
     VBox uploadArea = new VBox();
     uploadArea.setStyle(
         """
-      -fx-padding: 25;
-      -fx-spacing: 20;
+      -fx-padding: 22 25 22 25;
+      -fx-spacing: 15;
       -fx-background-color: #F4F4F4;""");
 
-    HBox uploadBox = new HBox();
-    uploadBox.setStyle(
-        """
-      -fx-spacing: 20;
-      -fx-alignment: center-left;""");
-    uploadArea.getChildren().add(uploadBox);
-
-    VBox uploadInstructions = new VBox();
-    uploadInstructions.setStyle("-fx-spacing: 5;");
-    uploadBox.getChildren().add(uploadInstructions);
+    VBox instructionsContainer = new VBox();
+    instructionsContainer.setStyle("-fx-spacing: 5;");
+    uploadArea.getChildren().add(instructionsContainer);
 
     Label instructionsTitle = new Label("Upload files");
     instructionsTitle.setStyle(
         """
       -fx-font-family: Arial, sans-serif;
       -fx-text-fill: #000000;
-      -fx-font-size: 22;""");
-    uploadInstructions.getChildren().add(instructionsTitle);
+      -fx-font-size: 24;""");
+    instructionsContainer.getChildren().add(instructionsTitle);
 
     StringBuilder supportedFileTypes = new StringBuilder("Supported types:");
     for (String fileT : model.getSupportedFileTypes()) {
@@ -70,18 +61,18 @@ public class UploadArea implements FXComponent {
         """
       -fx-font-family: Arial, sans-serif;
       -fx-text-fill: #5A5A5A;
-      -fx-font-size: 16;""");
-    uploadInstructions.getChildren().add(instructionsSubtitle);
+      -fx-font-size: 18;""");
+    instructionsContainer.getChildren().add(instructionsSubtitle);
 
-    HBox uploadClearContainer = new HBox();
-    uploadClearContainer.setStyle(
-"""
--fx-spacing: 15;
--fx-alignment: center-left;""");
-    uploadArea.getChildren().add(uploadClearContainer);
+    HBox buttonContainer = new HBox();
+    buttonContainer.setStyle(
+        """
+      -fx-spacing: 11;
+      -fx-alignment: center-left;""");
+    uploadArea.getChildren().add(buttonContainer);
 
     String buttonStyle =
-            """
+        """
           -fx-font-family: Arial, sans-serif;
           -fx-background-radius: 3;
           -fx-background-color: #0047AB;
@@ -92,69 +83,34 @@ public class UploadArea implements FXComponent {
     Button uploadButton = new Button("Upload");
     uploadButton.setStyle(buttonStyle);
     uploadButton.setOnAction(
-            (ActionEvent _) -> {
-              FileChooser fileChooser = new FileChooser();
-              File file = fileChooser.showOpenDialog(new Stage());
-              try {
-                controller.addUpload(file);
-              } catch (IOException | ModelException ex) {
-                showErrorDialogue.accept(ex.getMessage());
-              }
-            });
-    uploadClearContainer.getChildren().add(uploadButton);
+        (ActionEvent _) -> {
+          FileChooser fileChooser = new FileChooser();
+          File file = fileChooser.showOpenDialog(new Stage());
+          try {
+            controller.addUpload(file);
+          } catch (IOException | ModelException ex) {
+            showErrorDialogue.accept(ex.getMessage());
+          }
+        });
+    buttonContainer.getChildren().add(uploadButton);
 
     Button clearButton = new Button("Clear");
     clearButton.setStyle(buttonStyle);
     clearButton.setOnAction((ActionEvent _) -> controller.clearUploads());
-    uploadClearContainer.getChildren().add(clearButton);
+    buttonContainer.getChildren().add(clearButton);
 
-//    Region spacer = new Region();
-//    HBox.setHgrow(spacer, Priority.ALWAYS);
-//    uploadClearContainer.getChildren().add(spacer);
-
-    HBox saveArea = new HBox();
-    saveArea.setStyle(
-        """
-      -fx-spacing: 14;
-      -fx-alignment: center-left;""");
-    uploadClearContainer.getChildren().add(saveArea);
-
-    saveArea.getChildren().add(saveButtonRender);
+    buttonContainer.getChildren().add(saveButtonRender);
 
     Label saveLocation =
-            new Label(
-                    model.getOutputDirPath() != null ? model.getOutputDirPath() : "Select save location");
+        new Label(
+            model.getOutputDirPath() != null ? model.getOutputDirPath() : "Select save location");
     saveLocation.setStyle(
-            """
+        """
               -fx-font-family: Arial, sans-serif;
               -fx-text-fill: #5A5A5A;
-              -fx-font-size: 20;""");
-    saveArea.getChildren().add(saveLocation);
+              -fx-font-size: 18;""");
+    buttonContainer.getChildren().add(saveLocation);
 
     return uploadArea;
   }
 }
-
-// HBox saveArea = new HBox();
-//    saveArea.setStyle(
-//        """
-//      -fx-spacing: 14;
-//      -fx-alignment: center-left;""");
-//    uploadArea.getChildren().add(saveArea);
-//
-//    saveArea.getChildren().add(saveButtonRender);
-//
-// Label saveLocation =
-//        new Label(
-//                model.getOutputDirPath() != null ? model.getOutputDirPath() : "Select save
-// location");
-//    saveLocation.setStyle(
-//        """
-//      -fx-font-family: Arial, sans-serif;
-//      -fx-text-fill: #5A5A5A;
-//      -fx-font-size: 20;""");
-//    saveArea.getChildren().add(saveLocation);
-//
-// Region spacer2 = new Region();
-//    HBox.setHgrow(spacer2, Priority.ALWAYS);
-//    saveArea.getChildren().add(spacer2);

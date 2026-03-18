@@ -4,8 +4,7 @@ import com.WOP.controller.Controller;
 import com.WOP.model.Model;
 import com.WOP.view.help.HelpPage;
 import com.WOP.view.home.AppBar;
-import com.WOP.view.home.HomePageCenter;
-import com.WOP.view.home.SaveArea;
+import com.WOP.view.home.HomePage;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.layout.BorderPane;
@@ -18,15 +17,13 @@ public class WOPView implements View {
   private final Controller controller;
   private final Stage stage;
   private final int sceneWidth;
-  private final int sceneHeight;
 
   // Root component of the view
-  public WOPView(Model model, Controller controller, Stage stage, int sceneWidth, int sceneHeight) {
+  public WOPView(Model model, Controller controller, Stage stage, int sceneWidth) {
     this.model = model;
     this.controller = controller;
     this.stage = stage;
     this.sceneWidth = sceneWidth;
-    this.sceneHeight = sceneHeight;
     if (appBarRender == null) {
       // Only render static components once (big performance gains)
       appBarRender = new AppBar(controller).render();
@@ -38,24 +35,23 @@ public class WOPView implements View {
 
   @Override
   public Parent render() {
-    BorderPane EPSContainer = new BorderPane();
+    BorderPane viewContainer = new BorderPane();
 
-    EPSContainer.setTop(appBarRender);
+    viewContainer.setTop(appBarRender);
 
     switch (model.getActivePage()) {
       case HOME:
-        EPSContainer.setCenter(
-            new HomePageCenter(model, controller, this::showErrorDialogue).render());
-        EPSContainer.setBottom(
-            new SaveArea(model, controller, this::showErrorDialogue, this::showSuccessDialogue)
+        viewContainer.setCenter(
+            new HomePage(
+                    model, controller, this::showSuccessDialogue, this::showErrorDialogue)
                 .render());
         break;
       case HELP:
-        EPSContainer.setCenter(helpPageRender);
+        viewContainer.setCenter(helpPageRender);
         break;
     }
 
-    return EPSContainer;
+    return viewContainer;
   }
 
   @Override
@@ -63,24 +59,14 @@ public class WOPView implements View {
     stage.getScene().setRoot(render());
   }
 
-  @Override
-  public int sceneWidth() {
-    return sceneWidth;
-  }
-
-  @Override
-  public int sceneHeight() {
-    return sceneHeight;
-  }
-
-  // Callbacks for nested components to use (usually when exceptions are thrown)
+  // Callbacks for nested components to use to display dialogues
   @Override
   public void showErrorDialogue(String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
     alert.setTitle("Error");
     alert.setHeaderText("Error");
     alert.setContentText(message);
-    alert.getDialogPane().setPrefWidth(sceneWidth() - 100);
+    alert.getDialogPane().setPrefWidth(sceneWidth - 100);
     alert.showAndWait();
   }
 
@@ -90,7 +76,7 @@ public class WOPView implements View {
     alert.setTitle("Success");
     alert.setHeaderText("Success");
     alert.setContentText(message);
-    alert.getDialogPane().setPrefWidth(sceneWidth() - 100);
+    alert.getDialogPane().setPrefWidth(sceneWidth - 100);
     alert.showAndWait();
   }
 }
