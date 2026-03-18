@@ -24,10 +24,10 @@ public class SaveArea implements FXComponent {
   private final Consumer<String> showSuccessDialogue;
 
   public SaveArea(
-          Model model,
-          Controller controller,
-          Consumer<String> showErrorDialogue,
-          Consumer<String> showSuccessDialogue) {
+      Model model,
+      Controller controller,
+      Consumer<String> showErrorDialogue,
+      Consumer<String> showSuccessDialogue) {
     this.model = model;
     this.controller = controller;
     this.showErrorDialogue = showErrorDialogue;
@@ -40,33 +40,36 @@ public class SaveArea implements FXComponent {
   @Override
   public Parent render() {
     VBox separatorContainer = new VBox();
+    separatorContainer.setStyle(
+"""
+-fx-alignment: center;
+-fx-padding: 12 0 15 0;""");
 
-    Separator separator = new Separator(Orientation.HORIZONTAL);
-    separatorContainer.getChildren().add(separator);
 
-    HBox saveArea = new HBox();
-    saveArea.setStyle(
-        """
-      -fx-padding: 25;
-      -fx-spacing: 14;
-      -fx-alignment: center-left;""");
-    separatorContainer.getChildren().add(saveArea);
-
-    saveArea.getChildren().add(saveButtonRender);
-
-    Label saveLocation =
-        new Label(
-            model.getOutputDirPath() != null ? model.getOutputDirPath() : "Select save location");
-    saveLocation.setStyle(
-        """
-      -fx-font-family: Arial, sans-serif;
-      -fx-text-fill: #5A5A5A;
-      -fx-font-size: 20;""");
-    saveArea.getChildren().add(saveLocation);
-
-    Region spacer = new Region();
-    HBox.setHgrow(spacer, Priority.ALWAYS);
-    saveArea.getChildren().add(spacer);
+    //    HBox saveArea = new HBox();
+    //    saveArea.setStyle(
+    //        """
+    //      -fx-padding: 25;
+    //      -fx-spacing: 14;
+    //      -fx-alignment: center-left;""");
+    //    separatorContainer.getChildren().add(saveArea);
+    //
+    //    saveArea.getChildren().add(saveButtonRender);
+    //
+    //    Label saveLocation =
+    //        new Label(
+    //            model.getOutputDirPath() != null ? model.getOutputDirPath() : "Select save
+    // location");
+    //    saveLocation.setStyle(
+    //        """
+    //      -fx-font-family: Arial, sans-serif;
+    //      -fx-text-fill: #5A5A5A;
+    //      -fx-font-size: 20;""");
+    //    saveArea.getChildren().add(saveLocation);
+    //
+    //    Region spacer = new Region();
+    //    HBox.setHgrow(spacer, Priority.ALWAYS);
+    //    saveArea.getChildren().add(spacer);
 
     Button runButton = new Button("Run");
     runButton.setStyle(
@@ -75,8 +78,8 @@ public class SaveArea implements FXComponent {
       -fx-background-radius: 3;
       -fx-background-color: #0047AB;
       -fx-text-fill: #FFFFFF;
-      -fx-font-size: 20;
-      -fx-padding: 7 11 7 11;""");
+      -fx-font-size: 22;
+      -fx-padding: 8 32 8 32;""");
     runButton.setOnAction(
         (ActionEvent _) -> {
           try {
@@ -85,7 +88,7 @@ public class SaveArea implements FXComponent {
             showErrorDialogue.accept(ex.getMessage());
           }
         });
-    saveArea.getChildren().add(runButton);
+    separatorContainer.getChildren().add(runButton);
 
     return separatorContainer;
   }

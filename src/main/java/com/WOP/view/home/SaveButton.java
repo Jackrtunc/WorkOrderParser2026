@@ -33,7 +33,7 @@ public class SaveButton implements FXComponent {
         """
         -fx-background-radius: 3;
         -fx-background-color: #0047AB;""");
-    saveFileButton.setGraphic(new ImageView(new Image("folderImage1.png", 35, 35, true, true)));
+    saveFileButton.setGraphic(new ImageView(new Image("folderImage1.png", 30, 30, true, true)));
     saveFileButton.setOnAction(
         (ActionEvent _) -> {
           DirectoryChooser directoryChooser = new DirectoryChooser();

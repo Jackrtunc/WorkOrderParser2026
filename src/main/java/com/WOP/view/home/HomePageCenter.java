@@ -10,6 +10,9 @@ import javafx.geometry.Orientation;
 import javafx.scene.Parent;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 
 public class HomePageCenter implements FXComponent {
@@ -51,6 +54,13 @@ public class HomePageCenter implements FXComponent {
       uploadList.getChildren().add(new UploadCard(controller, upload).render());
     }
     scrollable.setContent(uploadList);
+
+    Region spacer = new Region();
+    VBox.setVgrow(spacer, Priority.ALWAYS);
+    homePageCenter.getChildren().add(spacer);
+
+    Separator separator2 = new Separator(Orientation.HORIZONTAL);
+    homePageCenter.getChildren().add(separator2);
 
     return homePageCenter;
   }
