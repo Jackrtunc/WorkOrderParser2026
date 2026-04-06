@@ -7,6 +7,3 @@ public class Main {
     Application.launch(App.class);
   }
 }
-
-// TODO
-// fix Department: showing up in location

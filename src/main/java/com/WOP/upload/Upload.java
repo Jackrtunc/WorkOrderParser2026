@@ -25,7 +25,7 @@ public class Upload {
     return file.getName();
   }
 
-  public File asCSV() throws IOException {
+  public File toCsvFile() throws IOException {
     return converter.convert(file);
   }
 

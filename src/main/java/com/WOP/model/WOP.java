@@ -12,6 +12,7 @@ import com.WOP.workorder.factories.FacilitiesWorkOrderFactory;
 import com.WOP.workorder.parser.CsvWorkOrderParser;
 import com.WOP.workorder.parser.Parser;
 import com.WOP.workorder.storage.WorkOrderStorage;
+import com.WOP.workorder.storage.WorkOrderTree;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
@@ -26,7 +27,6 @@ public class WOP implements Model {
   private Page activePage;
   private final List<Upload> uploads;
   private File outputDir;
-  private final WorkOrderStorage workOrders;
   private final int MAX_FACILITIES_COUNT;
   private final int MAX_DEPARTMENT_COUNT;
   private int facilitiesCount; // Keeps track of the type of each upload
@@ -38,7 +38,6 @@ public class WOP implements Model {
   public WOP(
       Page activePage,
       List<Upload> uploads,
-      WorkOrderStorage workOrders,
       int MAX_FACILITIES_COUNT,
       int MAX_DEPARTMENT_COUNT,
       List<ModelObserver> observers,
@@ -47,7 +46,6 @@ public class WOP implements Model {
     this.activePage = activePage;
     this.uploads = uploads;
     this.outputDir = null;
-    this.workOrders = workOrders;
     this.MAX_FACILITIES_COUNT = MAX_FACILITIES_COUNT;
     this.MAX_DEPARTMENT_COUNT = MAX_DEPARTMENT_COUNT;
     this.facilitiesCount = 0;
@@ -101,14 +99,14 @@ public class WOP implements Model {
 
   @Override
   public void setOutputDir(File outputDir) throws IOException {
-    if (outputDir == null) throw new IOException("Save location is invalid");
+    if (outputDir == null) throw new IOException("Invalid save location");
     this.outputDir = outputDir;
     updateObservers();
   }
 
   @Override
   public void addUpload(File file) throws IOException, ModelException {
-    if (file == null) throw new IOException("Error uploading file");
+    if (file == null) throw new IOException("Invalid upload file");
 
     int MAX_UPLOAD_COUNT = MAX_DEPARTMENT_COUNT + MAX_FACILITIES_COUNT;
     if (uploads.size() >= MAX_UPLOAD_COUNT) throw new ModelException("Maximum uploads reached");
@@ -116,8 +114,8 @@ public class WOP implements Model {
     FileConverter converter =
         fileConverterMap.get(
             getExtension(file)); // Match the file type with its corresponding converter
-    if (converter == null)
-      throw new ModelException("Unsupported file-type"); // .get() returns null if there's no match
+    if (converter == null) // .get() returns null if there's no match
+      throw new ModelException(String.format("%s: Unsupported file-type", file.getName()));
 
     uploads.add(new Upload(file, converter)); // Store uploads with their converter
     updateObservers();
@@ -155,6 +153,8 @@ public class WOP implements Model {
     // throws an exception if execution parameters aren't met
     validateExecution();
 
+    WorkOrderStorage workOrders = new WorkOrderTree();
+
     // process department spreadsheet first
     for (Upload upload : uploads) {
       if (upload.getUploadType() == UploadType.DEPARTMENT) {
@@ -162,7 +162,7 @@ public class WOP implements Model {
             new CsvWorkOrderParser(
                 upload.getName(),
                 new CSVReader(
-                    new FileReader(upload.asCSV())), // Convert upload to csv, pass it into a reader
+                    new FileReader(upload.toCsvFile())), // Convert upload to csv, pass it into a reader
                 new DepartmentWorkOrderFactory(config.departmentConfig()))) {
           for (WorkOrder workOrder : departmentParser) { // Get parsed work orders one at a time
             workOrders.add(workOrder);
@@ -180,7 +180,7 @@ public class WOP implements Model {
         try (Parser facilitiesParser =
             new CsvWorkOrderParser(
                 upload.getName(),
-                new CSVReader(new FileReader(upload.asCSV())),
+                new CSVReader(new FileReader(upload.toCsvFile())),
                 new FacilitiesWorkOrderFactory(
                     config.facilitiesConfig()))) { // Note the different factory
           for (WorkOrder workOrder : facilitiesParser) {

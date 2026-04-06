@@ -24,7 +24,7 @@ public class FacilitiesWorkOrderFactory implements WorkOrderFactory {
                 ? 0
                 : Integer.parseInt(row[config.referenceNumber().offset()]);
       } catch (NumberFormatException e) {
-        throw new WorkOrderException("Invalid reference number: input must be a number");
+        throw new WorkOrderException("Invalid reference number (reference number must be an integer)");
       }
 
       Status workOrderStatus = Status.fromString(row[config.workOrderStatus().offset()]);
@@ -37,7 +37,7 @@ public class FacilitiesWorkOrderFactory implements WorkOrderFactory {
                 ? 0
                 : Integer.parseInt(row[config.workOrderNumber().offset()]);
       } catch (NumberFormatException e) {
-        throw new WorkOrderException("Invalid work order number: input must be a number");
+        throw new WorkOrderException("Invalid work order number (work order number must be an integer)");
       }
 
       // parse location from description
@@ -64,7 +64,7 @@ public class FacilitiesWorkOrderFactory implements WorkOrderFactory {
           );
     } catch (IndexOutOfBoundsException e) {
       throw new WorkOrderException(
-          "Row doesn't fit expected format: trailing fields might be empty");
+          "Row doesn't fit expected format (trailing columns might be empty)");
     }
   }
 

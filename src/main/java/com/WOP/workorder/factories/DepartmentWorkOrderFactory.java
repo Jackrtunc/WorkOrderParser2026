@@ -27,7 +27,7 @@ public class DepartmentWorkOrderFactory implements WorkOrderFactory {
                 ? 0 // Special allowed value
                 : Integer.parseInt(row[config.referenceNumber().offset()]);
       } catch (NumberFormatException e) {
-        throw new WorkOrderException("Invalid reference number: input must be a number");
+        throw new WorkOrderException("Invalid reference number (reference number must be an integer)");
       }
 
       Status status = Status.fromString(row[config.status().offset()]);
@@ -41,7 +41,7 @@ public class DepartmentWorkOrderFactory implements WorkOrderFactory {
                 ? 0 // Special allowed value
                 : Integer.parseInt(row[config.workOrderNumber().offset()]);
       } catch (NumberFormatException e) {
-        throw new WorkOrderException("Invalid work order number: input must be a number");
+        throw new WorkOrderException("Invalid work order number (work order number must be an integer)");
       }
 
       String reportingParty = row[config.reportingParty().offset()];
@@ -64,7 +64,7 @@ public class DepartmentWorkOrderFactory implements WorkOrderFactory {
 
     } catch (IndexOutOfBoundsException e) {
       throw new WorkOrderException(
-          "Row doesn't fit expected format: columns might be empty");
+          "Row doesn't fit expected format (trailing columns might be empty)");
     }
   }
 

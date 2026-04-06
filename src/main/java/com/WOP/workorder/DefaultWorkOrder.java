@@ -30,21 +30,21 @@ public class DefaultWorkOrder implements WorkOrder {
       String notes) {
 
     if (referenceNumber < 0)
-      throw new WorkOrderException("Invalid reference number: number must be positive");
+      throw new WorkOrderException("Invalid reference number (reference number must be positive)");
     if (workOrderNumber < 0)
-      throw new WorkOrderException("Invalid work order number: number must be positive");
+      throw new WorkOrderException("Invalid work order number (work order number must be positive)");
     if (reportingParty.isEmpty())
-      throw new WorkOrderException("Invalid reporting party: reporting party must not be empty");
+      throw new WorkOrderException("Invalid reporting party (reporting party must not be empty)");
     if (isInvalidDate(dayRequested))
-      throw new WorkOrderException("Invalid day requested: date must be mm/dd/yyyy");
+      throw new WorkOrderException("Invalid day requested (date must be mm/dd/yyyy)");
     if (status == Status.UNKNOWN || status == null)
-      throw new WorkOrderException("Invalid status: unknown status code");
+      throw new WorkOrderException("Invalid status (unknown status code)");
     if (building.isEmpty())
-      throw new WorkOrderException("Invalid building: building must not be empty");
+      throw new WorkOrderException("Invalid building (building cell must not be empty)");
     if (location.isEmpty())
-      throw new WorkOrderException("Invalid location: location must not be empty");
+      throw new WorkOrderException("Invalid location (location cell must not be empty)");
     if (description.isEmpty())
-      throw new WorkOrderException("Invalid description: description must not be empty");
+      throw new WorkOrderException("Invalid description (description cell must not be empty)");
 
     this.referenceNumber = referenceNumber;
     this.workOrderNumber = workOrderNumber;
@@ -145,11 +145,12 @@ public class DefaultWorkOrder implements WorkOrder {
       return false; // If the date is 'N/A' accept it
 
     DateTimeFormatter formatter =
-        DateTimeFormatter.ofPattern("M/d/uuuu").withResolverStyle(ResolverStyle.STRICT);
+        DateTimeFormatter.ofPattern("M/d/yyyy");
     try {
       LocalDate.parse(date, formatter);
       return false;
     } catch (DateTimeParseException e) {
+      System.out.println(date);
       return true;
     }
   }

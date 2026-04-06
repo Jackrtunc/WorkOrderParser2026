@@ -6,6 +6,7 @@ import com.WOP.model.ModelException;
 import com.WOP.view.FXComponent;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.function.Consumer;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
@@ -85,9 +86,11 @@ public class UploadArea implements FXComponent {
     uploadButton.setOnAction(
         (ActionEvent _) -> {
           FileChooser fileChooser = new FileChooser();
-          File file = fileChooser.showOpenDialog(new Stage());
+          List<File> files = fileChooser.showOpenMultipleDialog(new Stage());
           try {
-            controller.addUpload(file);
+            for (File file : files) {
+              controller.addUpload(file);
+            }
           } catch (IOException | ModelException ex) {
             showErrorDialogue.accept(ex.getMessage());
           }

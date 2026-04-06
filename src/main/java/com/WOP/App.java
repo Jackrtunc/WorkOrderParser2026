@@ -24,7 +24,6 @@ public class App extends Application {
         new WOP(
             Page.HOME, // Default page
             new ArrayList<>(), // Stores uploads
-            new WorkOrderTree(), // Stores work orders
             20, // Max number of facilities uploads allowed
             1, // Max number of department uploads allowed
             new ArrayList<>(), // Stores observers

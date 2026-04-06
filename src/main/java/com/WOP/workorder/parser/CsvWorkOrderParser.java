@@ -40,7 +40,7 @@ public class CsvWorkOrderParser implements Parser {
       if (!Arrays.equals(headers, factory.getConfig().getHeaderNames()))
         throw new ModelException(
             String.format(
-                "Column names do not fit expected format: check for hidden empty columns\nError occurred in %s",
+                "%s: Column names do not fit expected format (trailing columns might contain empty strings)",
                 fileName));
     }
 
@@ -58,8 +58,8 @@ public class CsvWorkOrderParser implements Parser {
       } catch (WorkOrderException e) {
         throw new WorkOrderException(
             String.format( // Add context
-                "%s\nError occurred in %s\nRow: %s",
-                e.getMessage(), fileName, Arrays.toString(row)));
+                "%s: %s\n\n%s",
+                fileName, e.getMessage(), Arrays.toString(row)));
       }
     }
   }
