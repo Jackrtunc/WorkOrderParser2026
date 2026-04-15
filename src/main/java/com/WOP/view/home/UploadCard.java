@@ -113,14 +113,8 @@ public class UploadCard implements FXComponent {
     HBox.setHgrow(spacer, Priority.ALWAYS);
     uploadCard.getChildren().add(spacer);
 
-    Button removeUploadButton = new Button("❌");
-    removeUploadButton.setStyle(
-        """
-              -fx-background-color: transparent;
-              -fx-text-fill: #5A5A5A;
-              -fx-font-size: 18;""");
-    removeUploadButton.setOnAction((ActionEvent _) -> controller.removeUpload(upload));
-    uploadCard.getChildren().add(removeUploadButton);
+    FXComponent removeUploadButton = new CancelButton(12, () -> controller.removeUpload(upload));
+    uploadCard.getChildren().add(removeUploadButton.render());
 
     return uploadCard;
   }

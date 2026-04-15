@@ -21,15 +21,11 @@ public class UploadArea implements FXComponent {
   private final Model model;
   private final Controller controller;
   private final Consumer<String> showErrorDialogue;
-  private static Parent saveButtonRender = null;
 
   UploadArea(Model model, Controller controller, Consumer<String> showErrorDialogue) {
     this.model = model;
     this.controller = controller;
     this.showErrorDialogue = showErrorDialogue;
-    if (saveButtonRender == null) {
-      saveButtonRender = new SaveButton(controller, 29, showErrorDialogue).render();
-    }
   }
 
   @Override
@@ -102,7 +98,8 @@ public class UploadArea implements FXComponent {
     clearButton.setOnAction((ActionEvent _) -> controller.clearUploads());
     buttonContainer.getChildren().add(clearButton);
 
-    buttonContainer.getChildren().add(saveButtonRender);
+    FXComponent saveButton = new SaveButton(controller,32, showErrorDialogue);
+    buttonContainer.getChildren().add(saveButton.render());
 
     Label saveLocation =
         new Label(
