@@ -73,8 +73,8 @@ public class WOPView implements View {
   @Override
   public void showSuccessDialogue(String message) {
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-    alert.setTitle("Success");
-    alert.setHeaderText("Success");
+    alert.setTitle("Success!");
+    alert.setHeaderText("Success!");
     alert.setContentText(message);
     alert.getDialogPane().setPrefWidth(sceneWidth - 100);
     alert.showAndWait();
