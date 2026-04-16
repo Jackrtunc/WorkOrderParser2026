@@ -18,13 +18,13 @@ import javafx.stage.Stage;
 public class SaveButton implements FXComponent {
   private final Controller controller;
   private final Consumer<String> showErrorDialogue;
-  private static ImageView folderImage = null;
+  private static Image folderImage;
 
   SaveButton(Controller controller, int size, Consumer<String> showErrorDialogue) {
     this.controller = controller;
     this.showErrorDialogue = showErrorDialogue;
     if (folderImage == null) {
-        folderImage = new ImageView(new Image("folderImage1.png", size, size, true, true));
+        folderImage = new Image("folderImage1.png", size, size, true, true);
     }
   }
 
@@ -35,7 +35,7 @@ public class SaveButton implements FXComponent {
         """
         -fx-background-radius: 3;
         -fx-background-color: #0047AB;""");
-    saveButton.setGraphic(folderImage);
+    saveButton.setGraphic(new ImageView(folderImage));
     saveButton.setOnAction(
         (ActionEvent _) -> {
           DirectoryChooser directoryChooser = new DirectoryChooser();
